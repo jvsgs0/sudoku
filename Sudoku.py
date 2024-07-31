@@ -2,7 +2,6 @@ import pygame as pg
 import random
 import math
 
-#Cor
 preto = (0, 0, 0)
 vermelho = (255, 0, 0)
 verde = (0, 255, 0)
@@ -10,12 +9,9 @@ azul_claro = (200, 200, 255)
 azul = (100, 100, 255)
 branco = (255, 255, 255)
 
-#tela do Jogo
 window = pg.display.set_mode((1000, 700))
 
-#fonte
 pg.font.init()
-#fonte e tamanho
 fonte = pg.font.SysFont("Courier New", 50, bold=True)
 
 tabuleiro_data = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
@@ -137,24 +133,22 @@ def Quadrante_Selecionado(tabuleiro_data, x, y):
     return quadrante
 
 def Preenchendo_Quadrantes(tabuleiro_data, x2, y2):
-    quadrante_preenchido = True #Variável de controle para verificar se o quadrante está preenchido.
-    loop = 0 #Variável para contar quantas vezes o loop é executado.
+    quadrante_preenchido = True 
+    loop = 0 
     try_count = 0
-    numero = 1 #Número que será inserido no tabuleiro.
-    while quadrante_preenchido == True: #Loop que executa enquanto o quadrante estiver preenchido.
-        x = random.randint(x2, x2 + 2) #Gera coordenadas aleatórias dentro do quadrante.
+    numero = 1 
+    while quadrante_preenchido == True:
+        x = random.randint(x2, x2 + 2)
         y = random.randint(y2, y2 + 2)
-        linha_sorteada = Linha_Escolhida(tabuleiro_data, y) #Obtém a linha, coluna e quadrante atual.
+        linha_sorteada = Linha_Escolhida(tabuleiro_data, y) 
         coluna_sorteada = Coluna_Escolhida(tabuleiro_data, x)
         quadrante = Quadrante_Selecionado(tabuleiro_data, x, y)
-         #Verifica se a célula está vazia ('n') e se o número não está presente na linha, coluna e quadrante.
         if tabuleiro_data[y][x] == 'n' and numero not in linha_sorteada and numero not in coluna_sorteada and numero not in quadrante:
-            #Insere o número na célula e incrementa o número.
             tabuleiro_data[y][x] = numero
             numero += 1
-        loop += 1 #Incrementa o contador do loop.
-        if loop == 50:#Se o loop foi executado 50 vezes, reinicia o quadrante e o contador de número.
-            tabuleiro_data[y2][x2] = 'n'#Define todas as células do quadrante como vazias ('n').
+        loop += 1
+        if loop == 50:
+            tabuleiro_data[y2][x2] = 'n'
             tabuleiro_data[y2][x2 + 1] = 'n'
             tabuleiro_data[y2][x2 + 2] = 'n'
             tabuleiro_data[y2 + 1][x2] = 'n'
@@ -163,15 +157,11 @@ def Preenchendo_Quadrantes(tabuleiro_data, x2, y2):
             tabuleiro_data[y2 + 2][x2] = 'n'
             tabuleiro_data[y2 + 2][x2 + 1] = 'n'
             tabuleiro_data[y2 + 2][x2 + 2] = 'n'
-            #Reinicia os contadores de loop e número.
             loop = 0
             numero = 1
-            #Incrementa o contador de tentativas.
             try_count += 1
-            #Se o número de tentativas > 10, sai do loop.
         if try_count == 10:
             break
-        #Conta quantas células estão preenchidas no quadrante atual.
         count = 0
         for n in range(9):
             if quadrante[n] != 'n':
@@ -287,15 +277,12 @@ while True:
         if event.type == pg.KEYDOWN:
             numero = pg.key.name(event.key)
 
-    #Declarando variavel da posição do mouse
     mouse = pg.mouse.get_pos()
     mouse_position_x = mouse[0]
     mouse_position_y = mouse[1]
 
-    #Declarando variavel do click do mouse
     click = pg.mouse.get_pressed()
 
-    #Jogo
     Tabuleiro_Hover(window, mouse_position_x, mouse_position_y)
     click_position_x, click_position_y = Celula_Selecionada(window, mouse_position_x, mouse_position_y, click_last_status, click[0], click_position_x, click_position_y)
     Tabuleiro(window)
